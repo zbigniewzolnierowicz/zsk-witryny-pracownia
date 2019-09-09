@@ -1,6 +1,6 @@
 <?php
 
 $imie = "Janusz";
-echo "Hello " . $janusz . "!";
+echo "Hello " . $imie . "!";
 
 ?>
