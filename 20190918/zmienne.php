@@ -138,6 +138,19 @@
         echo wiek . "<br/>";
         define('PI', 3.141592654);
         echo PI . "<br/>";
+        // ! Stałe predefiniowane
+        echo PHP_VERSION . "<br/>";
+        echo gettype(PHP_VERSION) . "<br/>";
+        if (PHP_VERSION > 5.6) {
+            echo "Nowa wersja PHP<br/>";
+        } else {
+            echo "Stara wersja PHP<br/>";
+        }
+
+        echo PHP_OS, "<br/>";
+        echo __LINE__,"<br/>";
+        echo __FILE__,"<br/>";
+        echo __DIR__,"<br/>";
     ?>
 </body>
 </html>
