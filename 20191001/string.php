@@ -69,12 +69,56 @@
     // Sprawdź, czy w ciągu o nazwie text1 znajduje się ciąg text2.
 
     $text1 = 'abcdabcd';
-    $text2 = 'abc';
+    $text2 = 'zed';
 
-    if (strpos($text1, $text2) == false) {
-        echo $text2, ' jest w ', $text1, '<br/>';
-    } else {
+    if (strpos($text1, $text2) === false) {
         echo $text2, ' nie jest w ', $text1, '<br/>';
+    } else {
+        echo $text2, ' jest w ', $text1, '<br/>';
     }
     
+    // Przetwarzanie ciągów znaków
+    $replace = str_replace('zsk', 'szkoła', 'ZSK to najlepsza zsk');
+    echo $replace, '<br/>';
+    echo substr('Janusz Kowalski', 3) . '<br/>'; // usz Kowalski
+    echo substr('Janusz Kowalski', -3) . '<br/>'; // ski
+    echo substr('Janusz Kowalski', 7, 5) . '<br/>'; // Kowal
+    echo substr('Janusz Kowalski', -8, -3) . '<br/>'; // Kowal
+    echo substr('Janusz Kowalski', -8, 5) . '<br/>'; // Kowal
+
+    // Zamiana poslkich znaków
+    $login = 'żąkil';
+    $censor = array('ż','Ż','ą','Ą','ć', 'Ć');
+    $replace = array('z','Z','a','A','c', 'C');
+    $newLogin = str_replace($censor, $replace, $login);
+    echo "Login przed: $login<br/>Login po: $newLogin<br/>";
+    ob_clean();
+    /*
+        Napisz aplikację cenzurującą zdanie podane przez użytkownika.
+        Użytkownik podaje dane z formularza.
+        Zamień słowa "biały", "czarny" na ciąg znaków **#####**
+        Wyświetl dane w formacie:
+            Dane pobrane od użytkownika: <dane>
+            Poprawione dane: <dane>
+    */
+    echo <<< FORM
+        <form method="post">
+            <input type="text" name="dane" placeholder="Wpisz dane"><br/><br/>
+            <button type="submit">Zatwierdź</button>
+        </form>
+    FORM;
+    if (isset($_POST['dane'])):
+        $data = $_POST['dane'];
+        $toReplace = array('biały', 'czarny');
+        $replacer = '**#####**';
+        $replaced = str_ireplace($toReplace, $replacer, $data);
+        echo <<< RESULT
+            <div>
+                <h1>Dane pobrane od użytkownika</h1>
+                <p>$data</p>
+                <h1>Dane poprawione</h1>
+                <p>$replaced</p>
+            </div>
+        RESULT;
+    endif;
 ?>
