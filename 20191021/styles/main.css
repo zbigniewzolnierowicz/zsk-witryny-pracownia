@@ -1,0 +1,19 @@
+table, tr, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table {
+    margin: 0 auto;
+}
+
+td {
+    text-align: center;
+    margin: 1em 1ch;
+    width: 3ch;
+    height: 1em;
+}
+
+.diagonal {
+    background: red;
+}
