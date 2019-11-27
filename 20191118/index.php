@@ -109,7 +109,7 @@
             echo "&lt;p&gt;$i&lt;/p&gt;";
         endif;
     endfor;
-?>
+?&gt;
 </code>
     <?php
         if ($x < $y):
