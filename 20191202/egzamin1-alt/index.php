@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Egzamin 1 - Arkusz E.14-01-19.06</title>
+    <title>Egzamin 1ALT - Arkusz E.14-01-19.06</title>
+    <style>
+    td, th {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    </style>
 </head>
 <body>
     <?php
@@ -18,12 +24,10 @@
             echo "<li>" . $row['nazwa'] . "</li>";
         }
         echo "</ul>";
-        mysqli_close($connection);
     ?>
     <h1>Cienkopis</h1>
     <?php
         // Skrypt 2
-        $connection = mysqli_connect('localhost', 'root', '', 'egzamin1');
         $query = "SELECT `cena` FROM `towary` WHERE `nazwa` = 'cienkopis'";
         $result = mysqli_query($connection, $query);
         echo "<ul>";
@@ -31,7 +35,6 @@
             echo "<li>" . $row['nazwa'] . "</li>";
         }
         echo "</ul>";
-        mysqli_close($connection);
     ?>
     <h1>Zgodnie z listą</h1>
     <form method="post">
@@ -62,14 +65,29 @@
                 default:
                     break;
             }
-            $connection = mysqli_connect('localhost', 'root', '', 'egzamin1');
             $query = "SELECT `cena` FROM `towary` WHERE `nazwa` = '$towar'";
             $result = mysqli_query($connection, $query);
-            $row = mysqli_fetch_assoc($result);
-            $promocja =  round($row['cena'] * 0.85, 2);
-            echo "<p>" . $promocja . "</p>";
+    ?>
+    <table>
+        <thead>
+            <tr>
+                <th>Cena bez promocji</th>
+                <th>Cena z promocją</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+                $promocja =  round($row['cena'] * 0.85, 2);
+                $cenaBez = $row['cena'];
+                echo <<<EOD
+                    <tr><td>$cenaBez</td><td>$promocja</td></tr>
+                EOD;
+            }
             mysqli_close($connection);
         }
-    ?>
+        ?>
+        </tbody>
+    </table>
 </body>
 </html>
