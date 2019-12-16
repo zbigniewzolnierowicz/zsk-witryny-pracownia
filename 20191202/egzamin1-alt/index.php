@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Egzamin 1ALT - Arkusz E.14-01-19.06</title>
     <style>
+    table {
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
     td, th {
         border: 1px solid black;
-        border-collapse: collapse;
     }
     </style>
 </head>
@@ -28,7 +31,7 @@
     <h1>Cienkopis</h1>
     <?php
         // Skrypt 2
-        $query = "SELECT `cena` FROM `towary` WHERE `nazwa` = 'cienkopis'";
+        $query = "SELECT `cena` FROM `towary` WHERE `nazwa` = 'Cienkopis'";
         $result = mysqli_query($connection, $query);
         echo "<ul>";
         while ($row = mysqli_fetch_assoc($result)) {
@@ -39,32 +42,19 @@
     <h1>Zgodnie z listą</h1>
     <form method="post">
         <select name="towar" id="towar">
-            <option value="m">Marchew</option>
-            <option value="c">Cebula</option>
-            <option value="p">Pomelo</option>
-            <option value="s">Śliwka</option>
+            <?php
+                $query = "SELECT `nazwa` FROM `towary`";
+                $result = mysqli_query($connection, $query);
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<option value="' . $row['nazwa'] . '">' . $row['nazwa'] .  '</option>';
+                }
+            ?>
         </select>
         <button type="submit">Submit</button>
     </form>
     <?php
-        if (isset($_POST["towar"])) {
+        if (isset($_POST["towar"])):
             $towar = $_POST["towar"];
-            switch ($towar) {
-                case 'm':
-                    $towar = 'Marchew';
-                    break;
-                case 'c':
-                    $towar = 'Cebula';
-                    break;
-                case 'p':
-                    $towar = 'Pomelo';
-                    break;
-                case 's':
-                    $towar = 'Śliwka';
-                    break;
-                default:
-                    break;
-            }
             $query = "SELECT `cena` FROM `towary` WHERE `nazwa` = '$towar'";
             $result = mysqli_query($connection, $query);
     ?>
@@ -77,17 +67,46 @@
         </thead>
         <tbody>
         <?php
-            while ($row = mysqli_fetch_assoc($result)) {
+            while ($row = mysqli_fetch_assoc($result)):
                 $promocja =  round($row['cena'] * 0.85, 2);
                 $cenaBez = $row['cena'];
                 echo <<<EOD
                     <tr><td>$cenaBez</td><td>$promocja</td></tr>
                 EOD;
+            endwhile;
+        endif;
+        ?>
+        </tbody>
+    </table>
+    <h1>Tabela</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>L.p.</th>
+                <th>Nazwa produktu</th>
+                <th>Cena</th>
+                <th>Czy promocja?</th>
+                <th>Nazwa dostawcy</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            $query = "SELECT `towary`.`id`, `towary`.`nazwa`, `cena`, `promocja`, `dostawcy`.`nazwa` AS `dostawca` FROM `towary` LEFT JOIN `dostawcy` ON `towary`.`idDostawcy` = `dostawcy`.`id` WHERE `towary`.`nazwa` = '" . $_POST['towar'] . "'";
+            $result = mysqli_query($connection, $query);
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>";
+                echo "<td>" . $row['id'] . "</td>";
+                echo "<td>" . $row['nazwa'] . "</td>";
+                echo "<td>" . $row['cena'] . "</td>";
+                echo "<td>" . ($row['promocja'] ? 'W promocji' : 'Nie w promocji') . "</td>";
+                echo "<td>" . $row['dostawca'] . "</td>";
+                echo "</tr>";
             }
-            mysqli_close($connection);
-        }
         ?>
         </tbody>
     </table>
 </body>
 </html>
+<?php
+    mysqli_close($connection);
+?>
