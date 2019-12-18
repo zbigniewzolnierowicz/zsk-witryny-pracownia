@@ -13,6 +13,12 @@
     td, th {
         border: 1px solid black;
     }
+    form {
+        display: flex;
+        flex-grow: 0;
+        flex-direction: column;
+        width: 50vw;
+    }
     </style>
 </head>
 <body>
@@ -95,16 +101,38 @@
             $result = mysqli_query($connection, $query);
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>";
-                echo "<td>" . $row['id'] . "</td>";
-                echo "<td>" . $row['nazwa'] . "</td>";
-                echo "<td>" . $row['cena'] . "</td>";
+                echo "<td>$row[id]</td>";
+                echo "<td>$row[nazwa]</td>";
+                echo "<td>$row[cena]</td>";
                 echo "<td>" . ($row['promocja'] ? 'W promocji' : 'Nie w promocji') . "</td>";
-                echo "<td>" . $row['dostawca'] . "</td>";
+                echo "<td>$row[dostawca]</td>";
                 echo "</tr>";
             }
         ?>
         </tbody>
     </table>
+    <hr/>
+    <h2>Dodaj produkt</h2>
+    <form method="post" action="../scripts/add.php">
+        <input type="text" placeholder="Nazwa produktu" name="nazwa">
+        <input type="number" placeholder="Cena" name="cena" step="0.1">
+        <select name="promocja">
+            <option value="0">Nie jest w promocji</option>
+            <option value="1">Jest w promocji</option>
+        </select>
+        <select name="dostawca">
+        <?php
+            $query = "SELECT `id`, `nazwa` FROM `dostawcy`";
+            $result = mysqli_query($connection, $query);
+            while ($row = mysqli_fetch_assoc($result)):
+        ?>
+            <option value="<?php echo $row['id'] ?>"><?php echo $row['nazwa'] ?></option>
+        <?php
+            endwhile;
+        ?>
+        </select>
+        <button type="submit">Wyślij</button>
+    </form>
 </body>
 </html>
 <?php
